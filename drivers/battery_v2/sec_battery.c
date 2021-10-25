@@ -2144,6 +2144,12 @@ void sec_bat_aging_check(struct sec_battery_info *battery)
 }
 #endif
 
+#if defined(CONFIG_BATTERY_AGE_FORECAST_DETACHABLE)
+void sec_bat_check_battery_health(struct sec_battery_info *battery)
+{
+	/* no need to check in detachable battery model */
+}
+#else
 void sec_bat_check_battery_health(struct sec_battery_info *battery)
 {
 	union power_supply_propval value;
@@ -2180,6 +2186,7 @@ void sec_bat_check_battery_health(struct sec_battery_info *battery)
 	sec_bat_set_misc_event(battery,
 		(battery_health << BATTERY_HEALTH_SHIFT), BATT_MISC_EVENT_BATTERY_HEALTH);
 }
+#endif
 
 static bool sec_bat_temperature(
 				struct sec_battery_info *battery)
